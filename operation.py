@@ -1,4 +1,17 @@
 #operation
+def mult(first_num,second_num):
+    return first_num*second_num
+def dev(first_num,second_num):
+    try:   
+      return first_num/second_num
+    except ZeroDivisionError:
+        print("Zero divide error !")
+        return None
+def add(first_num,second_num):
+    return first_num+second_num
+def sub(first_num,second_num):
+    return first_num-second_num
+operation={'*':mult , '/':dev , '+':add , '-':sub}
 
 
 user_expression=input('Write expresion')
