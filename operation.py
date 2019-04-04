@@ -23,7 +23,7 @@ user_expression=input('Write expresion')
 split_expression=[]
 number=''
 
-#split user input 
+#split brackets container to list
 for chart in user_expression:
     if chart in allowed_chars:
       if chart.isdecimal() or chart=='.':
@@ -36,12 +36,15 @@ for chart in user_expression:
     else :
         print(error_message(chart))
         break
-split_expression.append(number)
-print(split_expression)
+ split_expression.append(number)
 
+#disasemblig brackets and returning star,end and slice for operation
 def split_brackets(expression):
-  start_index=None
-  end_index=None
+  
   try :
-    start_index=expression.index('(')
+    end_index=expression.index(')')
+    start_index=expression.rindex('(',0,end_index)
+    return expression[slice(start_index+1,end_index)],start_index,end_index
   except ValueError:
+     # print ('No  more brackets')
+      return expression,start_index,start_index
