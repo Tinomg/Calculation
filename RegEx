@@ -1,1 +1,12 @@
-^(\d+).(\d+)$
+import re
+
+#split simple expresion to operatos and numbers 
+def split_expression(exspr_string):
+    float_re="([0-9]*\.?[0-9])"
+    operator="(\\"+"+"+")"
+    operation_patern="^"+float_re+operator+float_re+"$"
+    print(operation_patern)
+    result=re.search(operation_patern,exspr_string)
+    return result 
+
+print(split_expression("3.2+2.2"))
