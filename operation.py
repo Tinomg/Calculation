@@ -24,26 +24,40 @@ def user_input():
 
 #disasemblig brackets and returning star,end and slice for operation
 def split_brackets(expression):
-  
-  bracket_patern="\([^\(\)]+\)"
-  brack_string=re.match(bracket_patern,expression)
-  return brack_string
+  if '(' in expression and ')' in expression:
+    bracket_patern=r"\([^\(\)]+\)"
+    brack_string=re.search(bracket_patern,expression)
+    return brack_string
+  else:
+    return expression
 
 # claculate 
 def calculation(expr_string,operator):
   expr_list=expr_string.split(operator)
-  return operation[operator](expr_list[0],expr_list[1])
+  return operation[operator](float(expr_list[0]),float(expr_list[1]))
 
 #split simple expresion to operatos and numbers 
-def split_expression(exspr_string):
+def split_expression(exspr_string,operator):
     float_re="([0-9]*\.?[0-9])"
-    operator="(\\"+"+"+")"
-    operation_patern="^"+float_re+operator+float_re+"$"
-    print(operation_patern)
-    result=re.search(operation_patern,exspr_string)
-    return result 
+    operator_decoration="(\\"+operator+")"
+    operation_patern="^"+float_re+operator_decoration+float_re+"$"
+    try:
+      result=(re.search(operation_patern,exspr_string)).group()
+    except AttributeError:
+      return None 
+    return result
+
+
+
 
 #start program
 raw_expression=user_input()
 while split_brackets(raw_expression):
-  brack_expression=split_brackets(raw_expression).group()
+
+  for operator in operation.keys():
+    inbracket_string=split_brackets(raw_expression).group().strip('(').strip(')')
+    while split_expression(inbracket_string,operator):
+      splited_string=split_expression(inbracket_string,operator)
+      print(calculation(splited_string,operator))
+  if  split_brackets(raw_expression)==raw_expression:
+    break
