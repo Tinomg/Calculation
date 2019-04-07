@@ -17,32 +17,24 @@ def sub(first_num,second_num):
 operation={'*':mult , '/':dev , '+':add , '-':sub}
 
 # Getting user input
-#allowed characters
-allowed_chars=('0','1','2','3','4','5','6','7','8','9','*','/','+','-','(',')','.')
-#Uncorect mesage function
-def error_message(uncorrect_char):
-    return (f'Not corect input -> {uncorrect_char}')
-user_expression=input('Write expresion')
+def user_input():
+  user_expression=input('Write expresion')
+  return user_expression
 
 
 #disasemblig brackets and returning star,end and slice for operation
 def split_brackets(expression):
   
-  try :
-    end_index=expression.index(')')
-    start_index=expression.rindex('(',0,end_index)
-    return expression[slice(start_index+1,end_index)],start_index,end_index
-  except ValueError:
-     # print ('No  more brackets')
-      return expression,start_index,start_index
+  bracket_patern="\([^\(\)]+\)"
+  brack_string=re.match(bracket_patern,expression)
+  return brack_string
 
-
-
+# claculate 
 def calculation(expr_string,operator):
   expr_list=expr_string.split(operator)
   return operation[operator](expr_list[0],expr_list[1])
 
-  #split simple expresion to operatos and numbers 
+#split simple expresion to operatos and numbers 
 def split_expression(exspr_string):
     float_re="([0-9]*\.?[0-9])"
     operator="(\\"+"+"+")"
@@ -50,3 +42,8 @@ def split_expression(exspr_string):
     print(operation_patern)
     result=re.search(operation_patern,exspr_string)
     return result 
+
+#start program
+raw_expression=user_input()
+while split_brackets(raw_expression):
+  brack_expression=split_brackets(raw_expression).group()
