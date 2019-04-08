@@ -26,7 +26,7 @@ def user_input():
 def split_brackets(expression):
   if '(' in expression and ')' in expression:
     bracket_patern=r"\([^\(\)]+\)"
-    brack_string=re.search(bracket_patern,expression)
+    brack_string=re.sub(bracket_patern,split_expression(expression),expression)
     return brack_string
   else:
     return expression
@@ -37,27 +37,27 @@ def calculation(expr_string,operator):
   return operation[operator](float(expr_list[0]),float(expr_list[1]))
 
 #split simple expresion to operatos and numbers 
-def split_expression(exspr_string,operator):
-    float_re="([0-9]*\.?[0-9])"
-    operator_decoration="(\\"+operator+")"
-    operation_patern="^"+float_re+operator_decoration+float_re+"$"
-    try:
-      result=(re.search(operation_patern,exspr_string)).group()
-    except AttributeError:
-      return None 
+def split_expression(exspr_string):
+    float_re=r'([0-9]*(\.?)[0-9])'
+    print(float_re)
+    for operator in operation:
+      operator_decoration="(\\"+operator+")"
+      operation_patern=r"^"+float_re+operator_decoration+float_re+"$"
+      print(operation_patern)
+      while re.search(operation_patern,exspr_string):
+        result=(re.sub(operation_patern,calculation(exspr_string,operator),exspr_string))
+      
     return result
 
 
 
 
 #start program
-raw_expression=user_input()
-while split_brackets(raw_expression):
+result="2+3+3+3"
+try:
+  print(float(result))
 
-  for operator in operation.keys():
-    inbracket_string=split_brackets(raw_expression).group().strip('(').strip(')')
-    while split_expression(inbracket_string,operator):
-      splited_string=split_expression(inbracket_string,operator)
-      print(calculation(splited_string,operator))
-  if  split_brackets(raw_expression)==raw_expression:
-    break
+except ValueError:
+  while True :
+    result=split_expression(result)
+  
